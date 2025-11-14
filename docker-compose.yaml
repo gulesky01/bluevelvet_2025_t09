@@ -2,13 +2,14 @@ services:
   database:
     image: mysql:latest
     restart: on-failure
+    container_name: bluevelvet_db
     environment:
       MYSQL_DATABASE: 'db'
       MYSQL_USER: 'rey'
       MYSQL_PASSWORD: 'rey-pass'
       MYSQL_ROOT_PASSWORD: 'root-pass'
     ports:
-      - '3306:3306'
+      - '32768:3306'
     expose:
       - '3306'
     volumes:

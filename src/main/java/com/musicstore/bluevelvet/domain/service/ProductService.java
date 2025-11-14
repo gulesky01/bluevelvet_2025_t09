@@ -22,7 +22,7 @@ import java.util.Optional;
 @Log4j2
 @Service
 @RequiredArgsConstructor
-public class ProductService {
+public class  ProductService {
 
     private final ProductRepository repository;
 
