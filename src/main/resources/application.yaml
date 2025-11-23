@@ -4,5 +4,5 @@ spring:
   datasource:
     username: rey
     password: rey-pass
-    url: jdbc:mysql://localhost:32768
+    url: jdbc:mysql://localhost:32768/db
     driver-class-name: com.mysql.cj.jdbc.Driver
