@@ -6,6 +6,6 @@ function ESMAGAR() {
 
 function iniciar() {
 	cd ${BLV_PROJ_ROOT}
-	sudo docker-compose up -d
+	sudo docker-compose up -d --force-recreate
 
 }

@@ -5,8 +5,8 @@
 
 CREATE TABLE users (
 	id BIGINT auto_increment NOT NULL,
-	name varchar(100) UNIQUE NOT NULL,
-	email varchar(100) NOT NULL,
+	name varchar(100) NOT NULL,
+	email varchar(100) UNIQUE NOT NULL,
 	password varchar(100) NOT NULL,
 	`role` varchar(100) NOT NULL,
 	enabled boolean NOT NULL,
@@ -20,28 +20,27 @@ CREATE TABLE users (
 -- );
 
 create table `authorities` (
+    id BIGINT auto_increment PRIMARY KEY,
 	ref_user BIGINT not null,
 	authority VARCHAR(50) not null,
 	constraint fk_authorities_users foreign key(ref_user) references users(id)
 );
-create unique index ix_auth_username on authorities (ref_user,authority);
-
 
 -- usuário 'felipechoi', senha 'lipeadmin' (convertida com hash blowfish para evitar ataques de linha de BD)
 INSERT INTO users
 (name, email, password, `role`, enabled)
-VALUES('felipechoi', 'felipe.choi@bluevelvet', '$2a$10$Ha3IM.uQ8tTTqTZ8KDFgn.XBMF5uWjjwG1Gh7Xdsj6kwORZrwMuCa', 'Administrator', 1);
+VALUES('felipe choi', 'felipe.choi@bluevelvet.not', '$2a$10$Ha3IM.uQ8tTTqTZ8KDFgn.XBMF5uWjjwG1Gh7Xdsj6kwORZrwMuCa', 'Administrator', 1);
 
 INSERT INTO users
 (name, email, password, `role`, enabled)
-VALUES('rey', 'rey@nowhere.not', '$2a$12$hV1VunyHo57JJJ/kE16j8.TnIKSgphLj.CT7BVfsq/eNRZfcspYAS', 'Administrator', 1);
+VALUES('fellipe rey', 'rey@nowhere.not', '$2a$12$hV1VunyHo57JJJ/kE16j8.TnIKSgphLj.CT7BVfsq/eNRZfcspYAS', 'Administrator', 1);
 
 INSERT INTO authorities
 (ref_user, authority)
-VALUES(1, 'Administrator');
+VALUES(1, 'ROLE_Administrator');
 INSERT INTO authorities
 (ref_user, authority)
-VALUES(2, 'Administrator');
+VALUES(2, 'ROLE_Administrator');
 
 
 -- PRODUTOS: criar schema para álbuns, músicas, autores, etc.
