@@ -1,0 +1,47 @@
+<form action="#" th:action="@{/register}" th:object="${registerRequest}" method="POST">
+
+
+    <h1 style="font-size: 32px; font-weight: 700; margin-bottom: 10px;">
+        BlueVelvet Music Store
+    </h1>
+
+    <h2 style="font-size: 24px; font-weight: 600; margin-bottom: 20px;">
+        Register
+    </h2>
+
+    <div>
+        <label for="name">Name</label>
+        <input type="text" id="name" th:field="*{name}" required />
+        <span th:if="${#fields.hasErrors('name')}" th:errors="*{name}" class="error-message">Nome Error</span>
+        <link rel="stylesheet" th:href="@{css/styles.css}">
+    </div>
+
+    <div>
+        <label for="email">Email</label>
+        <input type="email" id="email" th:field="*{email}" required />
+        <span th:if="${#fields.hasErrors('email')}" th:errors="*{email}" class="error-message">Email Error</span>
+    </div>
+
+    <div>
+        <label for="password">Password</label>
+        <input type="password" id="password" name="password" required />
+        <span th:if="${#fields.hasErrors('password')}" th:errors="*{password}" class="error-message">Password Error</span>
+    </div>
+
+    <div>
+        <label for="role">Select Role</label>
+        <select id="role" th:field="*{role}" required>
+            <option value="">Select Role</option>
+            <option value="Administrator">Administrator</option>
+            <option value="SalesManager">Sales Manager</option>
+            <option value="Editor">Editor</option>
+            <option value="Assistant">Assistant</option>
+            <option value="ShippingManager">Shipping Manager</option>
+        </select>
+        <span th:if="${#fields.hasErrors('role')}" th:errors="*{role}" class="error-message">Role Error</span>
+    </div>
+
+    <p th:if="${errorMessage}" class="general-error-message" th:text="${errorMessage}"></p>
+
+    <button type="submit">Register</button>
+</form>

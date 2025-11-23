@@ -1,3 +1,5 @@
+name: bluevelvet09
+
 services:
   database:
     image: mysql:latest

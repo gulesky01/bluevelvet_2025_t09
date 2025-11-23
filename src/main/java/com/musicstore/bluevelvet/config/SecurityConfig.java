@@ -5,6 +5,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.core.userdetails.User;
@@ -16,6 +17,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.provisioning.JdbcUserDetailsManager;
 import org.springframework.security.provisioning.UserDetailsManager;
+import org.springframework.security.web.SecurityFilterChain;
 
 import javax.sql.DataSource;
 import java.util.Collections;
@@ -28,12 +30,12 @@ public class SecurityConfig {
     @Autowired
     private DataSource dataSource;
 
-    @Bean
-    public WebSecurityCustomizer webSecurityCustomizer() {
-        return web -> web.ignoring().requestMatchers(
-                "/swagger-ui/**", "/v3/api-docs/**"
-        );
-    }
+//    @Bean
+//    public WebSecurityCustomizer webSecurityCustomizer() {
+//        return web -> web.ignoring().requestMatchers(
+//                "/swagger-ui/**", "/v3/api-docs/**"
+//        );
+//    }
 
 //    @Bean
 //    public UserDetailsService userDetailsService() {
@@ -74,14 +76,30 @@ public class SecurityConfig {
             throws Exception {
         auth.jdbcAuthentication()
                 .dataSource(dataSource)
-                .usersByUsernameQuery("select username as users,password,enabled "
+                .usersByUsernameQuery("select email as user,password,enabled "
                         + "from db.users "
-                        + "where username = ?")
-                .authoritiesByUsernameQuery("select username as user,authority "
-                        + "from db.authorities "
-                        + "where username = ?");
+                        + "where email = ?")
+                .authoritiesByUsernameQuery("select users.email as user, authorities.authority as authority "
+                        + "from db.authorities as authorities "
+                        + "inner join db.users as users "
+                        + "on users.id = authorities.ref_user "
+                        + "where users.email like ?");
     }
 
+    @Bean
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception{
+          return http
+                  .authorizeHttpRequests(auth -> auth
+                          .requestMatchers("/login", "/css/**", "/js/**",
+                                  "/swagger-ui/**", "/v3/api-docs/**").permitAll()
+                          .anyRequest().authenticated()
+                  )
+                   .formLogin((form) -> form
+                           .loginPage("/login")
+                           .loginProcessingUrl("/perform_login")
+                           .permitAll()
+                   ).build() ;
+    }
 
     @Bean
     public PasswordEncoder passwordEncoder() {

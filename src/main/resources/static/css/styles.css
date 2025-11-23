@@ -1,45 +1,211 @@
-/*
-TRABALHO: Criei uma folha de estilo inicial para facilitar o  trabalho, mas
-sinta-se à vontade em alterá-lo completamente de forma a tornar a aplicação mais
-"bonita"e lembrando sempre de testar o layout responsivo de sua soluçõa.
- */
-
-.container {
-    width: 80%;
-    margin: auto;
-    padding: 20px;
-    border: 2px solid #ccc;
-    border-radius: 5px;
-    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+/* =========================================
+   1. Reset e Estilos Globais
+   ========================================= */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    /* Fundo Gradiente da Marca BlueVelvet */
+    background: linear-gradient(135deg, #1e0c33 0%, #3a1c71 100%);
+    min-height: 100vh;
+    padding: 20px;
+    color: #333;
+}
+
+/* =========================================
+   2. Layout Principal (.container)
+   ========================================= */
+.container {
+    width: 90%; /* Ocupa mais espaço em telas pequenas */
+    max-width: 1200px; /* Limite máximo para telas grandes */
+    margin: 0 auto; /* Centraliza */
+    padding: 30px;
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3); /* Sombra elegante */
+}
+
+/* Títulos */
+h1, h2, h3 {
+    color: #333;
+    margin-bottom: 20px;
+}
+
+/* =========================================
+   3. Formulários
+   ========================================= */
 form {
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 15px;
+    margin-bottom: 30px; /* Espaço entre form e tabela */
+    padding: 20px;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    border: 1px solid #e9ecef;
 }
 
+label {
+    font-weight: 600;
+    font-size: 14px;
+    color: #555;
+    margin-bottom: 5px;
+}
+
+input[type="text"],
+input[type="number"],
+input[type="email"],
+input[type="password"],
+select,
+textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+    font-size: 16px; /* Melhor para leitura */
+    transition: border-color 0.2s;
+}
+
+input:focus, select:focus, textarea:focus {
+    outline: none;
+    border-color: #3a1c71; /* Roxo da marca */
+    box-shadow: 0 0 0 3px rgba(58, 28, 113, 0.1);
+}
+
+/* Controles do Produto (Botões de Ação) */
 #productControls {
-    margin-top: 15px;
-    margin-bottom: 30px;
     display: flex;
-    flex-direction: row;
+    flex-wrap: wrap; /* Quebra linha se não couber */
     gap: 10px;
+    margin-top: 10px;
+    margin-bottom: 20px;
 }
 
+/* =========================================
+   4. Botões (Estilo Genérico)
+   ========================================= */
+button, .btn {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.3s, transform 0.1s;
+    text-decoration: none;
+    display: inline-block;
+    text-align: center;
+}
+
+/* Botão Primário (Salvar/Novo) */
+button[type="submit"], .btn-primary {
+    background-color: #007bff;
+    color: white;
+}
+
+button[type="submit"]:hover, .btn-primary:hover {
+    background-color: #0056b3;
+}
+
+/* Botão Secundário (Limpar/Cancelar) */
+.btn-secondary {
+    background-color: #6c757d;
+    color: white;
+}
+
+.btn-secondary:hover {
+    background-color: #545b62;
+}
+
+/* Botão de Perigo (Excluir) */
+.btn-danger {
+    background-color: #dc3545;
+    color: white;
+}
+
+.btn-danger:hover {
+    background-color: #bd2130;
+}
+
+/* =========================================
+   5. Tabela (Table)
+   ========================================= */
+/* Wrapper para rolagem no mobile */
+.table-responsive {
+    overflow-x: auto; /* Adiciona barra de rolagem horizontal se precisar */
+}
 
 table {
     width: 100%;
-    border-collapse: collapse; /* Ensures borders are not double-spaced */
+    border-collapse: collapse;
+    margin-top: 20px;
+    background-color: white;
 }
 
+/* Cabeçalho da Tabela */
+thead th {
+    background-color: #343a40; /* Escuro */
+    color: #ffffff;
+    padding: 12px 15px;
+    text-align: left;
+    font-weight: 600;
+    border-top-left-radius: 4px; /* Arredondar cantos superiores */
+    border-top-right-radius: 4px;
+}
+
+/* Células */
 th, td {
-    border: 1px solid #ddd; /* Creates a light gray border */
-    padding: 8px; /* Adds some space inside the cells */
-    text-align: left; /* Aligns text to the left */
+    padding: 12px 15px;
+    border-bottom: 1px solid #ddd;
 }
 
-/* Center-align only the images in the second column */
+/* Listras alternadas (Zebra Striping) */
+tbody tr:nth-child(even) {
+    background-color: #f8f9fa;
+}
+
+/* Efeito Hover na Linha */
+tbody tr:hover {
+    background-color: #e2e6ea;
+    transition: background-color 0.2s;
+}
+
+/* Centralizar coluna de imagens ou ações */
+td img {
+    max-width: 50px; /* Garante que imagens grandes não quebrem a tabela */
+    height: auto;
+    border-radius: 4px;
+}
+
 td:nth-child(2) {
     text-align: center;
+}
+
+/* =========================================
+   6. Responsividade (Mobile)
+   ========================================= */
+@media (max-width: 768px) {
+    .container {
+        width: 100%;
+        padding: 15px;
+        border-radius: 0; /* Remove bordas arredondadas em tela cheia */
+    }
+
+    #productControls {
+        flex-direction: column; /* Botões empilhados no celular */
+    }
+
+    button, .btn {
+        width: 100%; /* Botões ocupam largura total */
+    }
+
+    /* Ajuste de fonte para mobile */
+    th, td {
+        padding: 8px 10px;
+        font-size: 14px;
+    }
 }
