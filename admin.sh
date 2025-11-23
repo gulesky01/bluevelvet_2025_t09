@@ -6,5 +6,6 @@ function ESMAGAR() {
 
 function iniciar() {
 	cd ${BLV_PROJ_ROOT}
-	sudo docker compose up --detach
+	sudo docker-compose up -d
+
 }
