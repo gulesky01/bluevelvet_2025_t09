@@ -146,5 +146,4 @@ INSERT INTO category
 VALUES(5, 'electronic dance music', NULL, '73783165-6d3e-480e-9fc2-22c3fc99b02b');
 INSERT INTO category
 (id, name, parent_id, picture_uuid)
-VALUES(6, 'happy hardcore', 5, 'f295a972-dc87-4785-812a-5c2a58044350
-');
+VALUES(6, 'happy hardcore', 5, 'f295a972-dc87-4785-812a-5c2a58044350');
