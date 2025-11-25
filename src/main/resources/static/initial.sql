@@ -114,3 +114,36 @@ INSERT INTO `product_detail` (`id`, `name`, `value`, `product_id`) VALUES ('12',
 INSERT INTO `product_detail` (`id`, `name`, `value`, `product_id`) VALUES ('13', 'Track 13', 'The bell gets out of the way', '1');
 INSERT INTO `product_detail` (`id`, `name`, `value`, `product_id`) VALUES ('14', 'Track 14', 'Chain gang island', '1');
 INSERT INTO `product_detail` (`id`, `name`, `value`, `product_id`) VALUES ('15', 'Track 15', 'My (limited) engagement', '1');
+
+-- CATEGORIAS: categorias de produtos (serviços de mídia pública tendem a chamar isso de 'tags')
+
+CREATE TABLE db.category (
+	id BIGINT auto_increment NOT NULL,
+	name varchar(100) NOT NULL,
+	parent_id BIGINT NULL,
+	picture_uuid varchar(100) NULL,
+	CONSTRAINT category_PK PRIMARY KEY (id),
+	CONSTRAINT category_UNIQUE UNIQUE KEY (name)
+)
+ENGINE=InnoDB
+DEFAULT CHARSET=utf8mb4
+COLLATE=utf8mb4_0900_ai_ci;
+
+INSERT INTO category
+(id, name, parent_id, picture_uuid)
+VALUES(1, 'bloopy', NULL, '48224007-9302-4578-9b35-63e05e9f4b9e');
+INSERT INTO category
+(id, name, parent_id, picture_uuid)
+VALUES(2, 'jazz', NULL, '6ccc3bc7-7cb8-44c8-8076-9a2920ad3032');
+INSERT INTO category
+(id, name, parent_id, picture_uuid)
+VALUES(3, 'rock', NULL, 'a356994d-9a1e-475a-9e3e-6d499d363356');
+INSERT INTO category
+(id, name, parent_id, picture_uuid)
+VALUES(4, 'bossa nova', 2, '6287444d-3814-4b1d-ba93-cd3ed461ecd0');
+INSERT INTO category
+(id, name, parent_id, picture_uuid)
+VALUES(5, 'electronic dance music', NULL, '73783165-6d3e-480e-9fc2-22c3fc99b02b');
+INSERT INTO category
+(id, name, parent_id, picture_uuid)
+VALUES(6, 'happy hardcore', 5, 'f295a972-dc87-4785-812a-5c2a58044350');
