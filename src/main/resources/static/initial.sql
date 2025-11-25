@@ -140,8 +140,7 @@ INSERT INTO category
 VALUES(3, 'rock', NULL, 'a356994d-9a1e-475a-9e3e-6d499d363356');
 INSERT INTO category
 (id, name, parent_id, picture_uuid)
-VALUES(4, 'bossa nova', 2, '6287444d-3814-4b1d-ba93-cd3ed461ecd0
-');
+VALUES(4, 'bossa nova', 2, '6287444d-3814-4b1d-ba93-cd3ed461ecd0');
 INSERT INTO category
 (id, name, parent_id, picture_uuid)
 VALUES(5, 'electronic dance music', NULL, '73783165-6d3e-480e-9fc2-22c3fc99b02b');
