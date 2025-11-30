@@ -6,6 +6,7 @@ import com.musicstore.bluevelvet.infrastructure.entity.Category;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 @Service
 public interface CategoryService {
@@ -19,4 +20,7 @@ public interface CategoryService {
     CategoryResponse createCategory(CategoryRequest request);
 
     CategoryResponse updateCategory(Long id, CategoryRequest request);
+
+    public CategoryResponse setPictureOfCategory(Long id, MultipartFile file) throws Exception;
+
 }
