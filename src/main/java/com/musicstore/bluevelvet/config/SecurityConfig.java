@@ -97,11 +97,11 @@ public class SecurityConfig {
                                   "/swagger-ui/**", "/v3/api-docs/**").permitAll()
                           .anyRequest().authenticated()
                   )
-//                   .formLogin((form) -> form
-//                           .loginPage("/login")
-//                           .loginProcessingUrl("/perform_login")
-//                           .permitAll()
-//                   )
+                      .formLogin((form) -> form
+                           .loginPage("/login")
+                           .loginProcessingUrl("/perform_login")
+                           .permitAll()
+                   )
                   .build() ;
     }
 
