@@ -38,7 +38,7 @@ public class CategoryController {
         return ResponseEntity.ok(service.findById(id));
     }
 
-    @PreAuthorize("hasRole('Administrator' or hasRole('Salesperson') or hasRole('Shipper')")
+    @PreAuthorize("hasRole('Administrator') or hasRole('Salesperson') or hasRole('Shipper')")
     @GetMapping
     @Operation(summary = "Get all categories, with optional name filter", description = "Get all product categories from the Blue Velvet Music Store")
     public ResponseEntity<Page<CategoryResponse>> getProductsOfCategory(@RequestParam(required=false) String name, Pageable pageable) {
