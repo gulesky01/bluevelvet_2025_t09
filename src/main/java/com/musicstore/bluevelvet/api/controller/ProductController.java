@@ -11,6 +11,7 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @Log4j2
@@ -64,6 +65,7 @@ public class ProductController {
         return ResponseEntity.ok(service.updateProduct(id, request));
     }
 
+    @PreAuthorize("hasRole('Administrator') or hasRole('Editor')")
     @GetMapping("/categories_of_product/{id}")
     @Operation(summary = "show categories of product", description = "List the categories a certain product belongs to.")
     public ResponseEntity<Page<CategoryResponse>> getCategoriesOfProduct(@PathVariable Long id, Pageable pageable){
