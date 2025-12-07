@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard - BlueVelvet</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+</head>
+
+<body>
+
+<div class="container">
+
+    <h1>Dashboard - BlueVelvet</h1>
+
+    <!-- Usuário logado -->
+    <h3>
+        Welcome, <span th:text="${username}"></span>
+        (<span th:text="${role}"></span>)
+    </h3>
+    <!-- Apenas ADMIN pode ver -->
+    <div sec:authorize="hasRole('ADMIN')">
+        <a th:href="@{/register}" class="dashboard-card" style="background:#2980b9; color:white;">
+            👤 Register New User
+        </a>
+    </div>
+
+    <!-- Logout -->
+    <form th:action="@{/logout}" method="post" style="text-align:right;">
+        <button type="submit" class="dashboard-card" style="background:#c0392b; color:white;">
+            🚪 Logout
+        </button>
+    </form>
+
+    <hr>
+
+    <!-- Buscar categoria -->
+    <!-- Buscar categoria -->
+    <form method="get" th:action="@{/dashboard}">
+        <label for="searchBox" style="display:none;">Search</label>
+        <input id="searchBox" type="text" name="search" th:value="${search}" placeholder="Search category...">
+        <button type="submit">Search</button>
+        <a th:href="@{/dashboard}" style="margin-left:10px;">Reset</a>
+    </form>
+
+    <br>
+
+    <!-- Botão para adicionar nova categoria -->
+    <a th:href="@{/categories/new}" class="dashboard-card">➕ Add Category</a>
+
+    <h2>Categories</h2>
+
+    <table>
+        <thead>
+        <tr>
+            <th>
+                <a th:href="@{/dashboard(sort='name', dir=${dir == 'asc' ? 'desc' : 'asc'})}">
+                    Name
+                </a>
+            </th>
+            <th>Image</th>
+            <th>
+                <a th:href="@{/dashboard(sort='id', dir=${dir == 'asc' ? 'desc' : 'asc'})}">
+                    ID
+                </a>
+            </th>
+            <th>Status</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        <tr th:each="cat : ${categories}">
+            <td th:text="${cat.name}"></td>
+
+            <td>
+                <img th:if="${cat.picture_uuid != null}"
+                     th:src="@{|http://localhost:32791/pics/${cat.picture_uuid}.webp|}"
+                     width="60"
+                     alt="Category image">
+
+
+                <span th:if="${cat.picture_uuid == null}" style="color: gray;">
+                    No image
+                </span>
+            </td>
+
+            <td th:text="${cat.id}"></td>
+
+            <td th:text="${cat.enabled ? 'Enabled' : 'Disabled'}"></td>
+
+            <td>
+                <a th:href="@{/categories/edit/{id}(id=${cat.id})}">Edit</a> |
+                <a th:href="@{/categories/toggle/{id}(id=${cat.id})}">
+                    <span th:text="${cat.enabled ? 'Disable' : 'Enable'}"></span>
+                </a> |
+                <a th:href="@{/categories/delete/{id}(id=${cat.id})}"
+                   onclick="return confirm('Delete this category?')">Delete</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+    <!-- PAGINAÇÃO -->
+    <div class="pagination">
+        <a th:if="${categories.hasPrevious()}"
+           th:href="@{/dashboard(page=${categories.number - 1}, search=${search}, sort=${sort}, dir=${dir})}">
+            Previous
+        </a>
+
+        <span>
+            Page <span th:text="${categories.number + 1}"></span>
+            of <span th:text="${categories.totalPages}"></span>
+        </span>
+
+        <a th:if="${categories.hasNext()}"
+           th:href="@{/dashboard(page=${categories.number + 1}, search=${search}, sort=${sort}, dir=${dir})}">
+            Next
+        </a>
+    </div>
+
+    <br>
+
+    <!-- RESETAR LISTA DE CATEGORIAS -->
+    <a th:href="@{/categories/reset}" class="dashboard-card" style="background:#e67e22;">
+        🔄 Reset Categories
+    </a>
+
+</div>
+
+
+
+
+</body>
+</html>

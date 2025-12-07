@@ -146,5 +146,41 @@ public class CategoryServiceImpl implements CategoryService {
         return repository.findByParentId(id, pageable).map(this::responseFromEntity);
     }
 
+    @Override
+    public boolean existsByName(String name) {
+        return repository.existsByNameIgnoreCase(name);
+    }
+
+
+    public void resetCategories() {
+
+        // Remove todas as categorias existentes
+        repository.deleteAll();
+
+        // Cria lista inicial para facilitar testes
+        Category c1  = new Category(0L, "Guitars", null, null, null, true);
+        Category c2  = new Category(0L, "Keyboards", null, null, null, true);
+        Category c3  = new Category(0L, "Microphones", null, null, null, true);
+        Category c4  = new Category(0L, "Speakers", null, null, null, true);
+        Category c5  = new Category(0L, "Headphones", null, null, null, true);
+        Category c6  = new Category(0L, "Studio", null, null, null, true);
+        Category c7  = new Category(0L, "DJ", null, null, null, true);
+        Category c8  = new Category(0L, "Lighting", null, null, null, true);
+        Category c9  = new Category(0L, "Software", null, null, null, true);
+        Category c10 = new Category(0L, "Accessories", null, null, null, true);
+
+        repository.save(c1);
+        repository.save(c2);
+        repository.save(c3);
+        repository.save(c4);
+        repository.save(c5);
+        repository.save(c6);
+        repository.save(c7);
+        repository.save(c8);
+        repository.save(c9);
+        repository.save(c10);
+    }
+
+
 
 }

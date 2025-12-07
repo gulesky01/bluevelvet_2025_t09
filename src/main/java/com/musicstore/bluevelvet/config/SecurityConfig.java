@@ -95,13 +95,22 @@ public class SecurityConfig {
                   .authorizeHttpRequests(auth -> auth
                           .requestMatchers("/login", "/css/**", "/js/**",
                                   "/swagger-ui/**", "/v3/api-docs/**").permitAll()
+                          .requestMatchers("/dasboard/**").hasAnyRole("Administrator","SalesManager", "ShippingManager")
                           .anyRequest().authenticated()
                   )
                       .formLogin((form) -> form
                            .loginPage("/login")
                            .loginProcessingUrl("/perform_login")
+                              .defaultSuccessUrl("/dashboard", true)
                            .permitAll()
                    )
+                  .logout(logout -> logout
+                          .logoutUrl("/logout")
+                          .logoutSuccessUrl("/login?logout")
+                          .invalidateHttpSession(true)
+                          .clearAuthentication(true)
+                          .permitAll()
+                  )
                   .build() ;
     }
 
