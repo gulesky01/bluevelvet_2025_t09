@@ -38,6 +38,7 @@ public class CategoryController {
         return ResponseEntity.ok(service.findById(id));
     }
 
+    @PreAuthorize("hasRole('Administrator') or hasRole('Salesperson') or hasRole('Shipper')")
     @GetMapping
     @Operation(summary = "Get all categories, with optional name filter", description = "Get all product categories from the Blue Velvet Music Store")
     public ResponseEntity<Page<CategoryResponse>> getProductsOfCategory(@RequestParam(required=false) String name, Pageable pageable) {
@@ -66,6 +67,7 @@ public class CategoryController {
         return ResponseEntity.ok(service.findByParentId(id, pageable));
     }
 
+    @PreAuthorize("hasRole('Administrator') or hasRole('Editor')")
     @DeleteMapping("/{id}")
     @Operation(summary = "Delete category by id", description = "Delete a category from the Blue Velvet Music Store")
     public ResponseEntity<Void> deleteCategoryById(@PathVariable Long id) {
@@ -84,6 +86,7 @@ public class CategoryController {
     }
 
 
+    @PreAuthorize("hasRole('Administrator')")
     @PostMapping
     @Operation(summary = "Create a new category", description = "Create a category of products for the Blue Velvet Music Store")
     public ResponseEntity<CategoryResponse> createCategory(@RequestBody CategoryRequest request){
@@ -92,6 +95,7 @@ public class CategoryController {
         return ResponseEntity.ok(service.createCategory(request));
     }
 
+    @PreAuthorize("hasRole('Administrator')")
     @PutMapping("/{id}")
     @Operation(summary = "Update a category", description = "Update a category of products from the Blue Velvet Music Store")
     public ResponseEntity<CategoryResponse> updateCategoryById(@PathVariable Long id, @RequestBody CategoryRequest request) {

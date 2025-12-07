@@ -13,8 +13,6 @@ public interface CategoryRepository extends JpaRepository<Category,Long> {
     boolean existsByNameIgnoreCase(String name);
 
     @Query("SELECT c FROM Product p JOIN p.categories c WHERE p.id = :product_id ORDER BY c.id")
-
-
     Page<Category> findByProductId(Long product_id, Pageable pageable);
 
     Page<Category> findByNameLike(String name, Pageable pageable);
