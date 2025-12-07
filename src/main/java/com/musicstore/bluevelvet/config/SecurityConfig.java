@@ -100,8 +100,16 @@ public class SecurityConfig {
                       .formLogin((form) -> form
                            .loginPage("/login")
                            .loginProcessingUrl("/perform_login")
+                              .defaultSuccessUrl("/dashboard", true)
                            .permitAll()
                    )
+                  .logout(logout -> logout
+                          .logoutUrl("/logout")
+                          .logoutSuccessUrl("/login?logout")
+                          .invalidateHttpSession(true)
+                          .clearAuthentication(true)
+                          .permitAll()
+                  )
                   .build() ;
     }
 

@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Categorias - BlueVelvet</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+</head>
+
+<body>
+
+<!-- ✅ CONTAINER -->
+<div class="container">
+
+    <!-- TÍTULO + BOTÕES -->
+    <div class="category-header">
+        <h1>📂 Categorias</h1>
+        <div>
+            <a href="/categories/new" class="btn btn-primary">Nova Categoria</a>
+            <a href="/dashboard" class="btn btn-secondary">Voltar</a>
+        </div>
+    </div>
+
+    <!-- ✅ TABELA -->
+    <div class="table-responsive">
+        <table>
+            <thead>
+            <tr>
+                <th>Nome</th>
+                <th>Status</th>
+                <th>Ações</th>
+            </tr>
+            </thead>
+
+            <tbody>
+            <tr th:each="cat : ${categories}">
+                <td th:text="${cat.name}"></td>
+
+                <!-- ✅ STATUS ESTILIZADO -->
+                <td>
+                    <span th:class="${cat.enabled} ? 'category-status status-enabled' : 'category-status status-disabled'"
+                          th:text="${cat.enabled} ? 'Ativa' : 'Inativa'"></span>
+                </td>
+
+                <!-- ✅ BOTÕES DE AÇÃO -->
+                <td class="action-buttons">
+                    <a th:href="@{/categories/edit/{id}(id=${cat.id})}" class="btn btn-primary">Editar</a>
+                    <a th:href="@{/categories/toggle/{id}(id=${cat.id})}" class="btn btn-secondary">Ativar/Desativar</a>
+                    <a th:href="@{/categories/delete/{id}(id=${cat.id})}" class="btn btn-danger">Excluir</a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+</div>
+
+</body>
+</html>

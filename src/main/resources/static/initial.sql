@@ -124,7 +124,7 @@ CREATE TABLE `category` (
   `name` varchar(100) NOT NULL,
   `parent_id` bigint DEFAULT NULL,
   `picture_uuid` varchar(100) DEFAULT NULL,
-  `enabled` tinyint(1) DEFAULT NULL,
+  `enabled` tinyint(1) DEFAULT NULL ,
   PRIMARY KEY (`id`),
   UNIQUE KEY `category_UNIQUE` (`name`)
 ) ENGINE=InnoDB AUTO_INCREMENT=16
@@ -158,7 +158,7 @@ VALUES(14, 'CD', NULL, '60f1c367-55b2-42db-acf8-b1a5997563d2', 1);
 
 CREATE TABLE `category_of_product` (
   `category_id` bigint NOT NULL,
-  `product_id` int NOT NULL,
+  `product_id` INT NOT NULL,
   UNIQUE KEY `category_of_product_unique` (`category_id`,`product_id`),
   KEY `category_of_product_product_FK` (`product_id`),
   CONSTRAINT `category_of_product_category_FK` FOREIGN KEY (`category_id`) REFERENCES `category` (`id`) ON DELETE CASCADE,

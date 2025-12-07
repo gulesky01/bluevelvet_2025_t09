@@ -76,6 +76,14 @@ public class CategoryController {
         return ResponseEntity.noContent().build();
     }
 
+    @GetMapping("/exists")
+    @Operation(summary = "Check if category exists by name")
+    public ResponseEntity<Boolean> categoryExists(@RequestParam String name) {
+        log.info("Checking if category exists with name: {}", name);
+        return ResponseEntity.ok(service.existsByName(name));
+    }
+
+
     @PostMapping
     @Operation(summary = "Create a new category", description = "Create a category of products for the Blue Velvet Music Store")
     public ResponseEntity<CategoryResponse> createCategory(@RequestBody CategoryRequest request){
@@ -104,6 +112,8 @@ public class CategoryController {
             return ResponseEntity.notFound().build();
         }
     }
+
+
 
     @ExceptionHandler(CategoryNotFoundException.class)
     public ResponseEntity<?> handleInvalidData(CategoryNotFoundException exc) { return ResponseEntity.notFound().build(); }
