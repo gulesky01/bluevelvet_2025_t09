@@ -8,12 +8,17 @@ import com.musicstore.bluevelvet.domain.service.ProductService;
 import com.musicstore.bluevelvet.infrastructure.entity.Category;
 import com.musicstore.bluevelvet.infrastructure.repository.CategoryRepository;
 import lombok.RequiredArgsConstructor;
+//import org.apache.tomcat.util.net.openssl.ciphers.Authentication;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import java.security.Principal;
 
 @Controller
 @RequiredArgsConstructor
@@ -31,9 +36,52 @@ public class ThymeleafController {
 
     // ==== DASHBOARD ====
     @GetMapping("/dashboard")
-    public String dashboard(){
+    public String dashboard(Model model,
+                            @RequestParam(defaultValue = "0") int page,
+                            @RequestParam(defaultValue = "10") int size,
+                            @RequestParam(defaultValue = "name") String sort,
+                            @RequestParam(defaultValue = "asc") String dir,
+                            @RequestParam(defaultValue = "") String search,
+                            Authentication authentication) {
+
+        // Usuário logado
+        String username = authentication.getName();
+        String role = authentication.getAuthorities()
+                .iterator()
+                .next()
+                .getAuthority();
+
+        model.addAttribute("username", username);
+        model.addAttribute("role", role);
+
+        // Paginação
+        Sort.Direction direction = dir.equals("asc") ? Sort.Direction.ASC : Sort.Direction.DESC;
+        Pageable pageable = PageRequest.of(page, size, Sort.by(direction, sort));
+
+        Page<Category> categories;
+
+        if (search.isEmpty()) {
+            categories = categoryRepository.findAll(pageable);
+        } else {
+            categories = categoryRepository.findByNameContainingIgnoreCase(search, pageable);
+        }
+
+        model.addAttribute("categories", categories);
+        model.addAttribute("search", search);
+        model.addAttribute("sort", sort);
+        model.addAttribute("dir", dir);
+
         return "dashboard";
     }
+
+
+    @GetMapping("/categories/reset")
+    public String resetCategories() {
+        categoryService.resetCategories(); // você implementa isso
+        return "redirect:/dashboard";
+    }
+
+
 
     // ==== PRODUCTS ====
     @GetMapping("/product/{id}")

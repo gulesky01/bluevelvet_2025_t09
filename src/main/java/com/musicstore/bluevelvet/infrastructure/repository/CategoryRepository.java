@@ -20,4 +20,6 @@ public interface CategoryRepository extends JpaRepository<Category,Long> {
     Page<Category> findByNameLike(String name, Pageable pageable);
 
     Page<Category> findByParentId(Long parent_id, Pageable pageable);
+
+    Page<Category> findByNameContainingIgnoreCase(String name, Pageable pageable);
 }

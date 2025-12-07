@@ -95,6 +95,7 @@ public class SecurityConfig {
                   .authorizeHttpRequests(auth -> auth
                           .requestMatchers("/login", "/css/**", "/js/**",
                                   "/swagger-ui/**", "/v3/api-docs/**").permitAll()
+                          .requestMatchers("/dasboard/**").hasAnyRole("Administrator","SalesManager", "ShippingManager")
                           .anyRequest().authenticated()
                   )
                       .formLogin((form) -> form

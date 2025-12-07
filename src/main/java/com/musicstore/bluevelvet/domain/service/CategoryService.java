@@ -30,4 +30,8 @@ public interface CategoryService {
     Page<CategoryResponse> findByParentId(Long id, Pageable pageable);
 
     boolean existsByName(String name);
+
+    void resetCategories();
+
+
 }
