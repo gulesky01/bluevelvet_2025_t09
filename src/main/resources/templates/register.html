@@ -44,4 +44,9 @@
     <p th:if="${errorMessage}" class="general-error-message" th:text="${errorMessage}"></p>
 
     <button type="submit">Register</button>
+
+    <div style="margin-top: 15px; text-align: center;">
+        <a th:href="@{/login}" class="btn btn-secondary">← Voltar para Login</a>
+    </div>
+
 </form>

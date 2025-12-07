@@ -146,5 +146,11 @@ public class CategoryServiceImpl implements CategoryService {
         return repository.findByParentId(id, pageable).map(this::responseFromEntity);
     }
 
+    @Override
+    public boolean existsByName(String name) {
+        return repository.existsByNameIgnoreCase(name);
+    }
+
+
 
 }
