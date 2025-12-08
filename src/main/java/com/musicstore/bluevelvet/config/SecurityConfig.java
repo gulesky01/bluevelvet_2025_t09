@@ -95,13 +95,20 @@ public class SecurityConfig {
                   .authorizeHttpRequests(auth -> auth
                           .requestMatchers("/login", "/css/**", "/js/**",
                                   "/swagger-ui/**", "/v3/api-docs/**").permitAll()
-                          .requestMatchers("/dasboard/**").hasAnyRole("Administrator","SalesManager", "ShippingManager")
+                          .requestMatchers("/dashboard/**").hasAnyRole("Administrator","SalesManager", "ShippingManager")
+                          .requestMatchers("/register/**").hasRole("Administrator")
+                          .requestMatchers("/categories/new").hasRole("Administrator")
+                          .requestMatchers("/categories/creat").hasRole("Administrator")
+                          .requestMatchers("/categories/edit/**").hasAnyRole("Administrator", "Editor")
+                          .requestMatchers("/categories/delete/**").hasAnyRole("Administrator", "Editor")
+                          .requestMatchers("/categories/toggle/**").hasAnyRole("Administrator", "Editor")
+
                           .anyRequest().authenticated()
                   )
                       .formLogin((form) -> form
                            .loginPage("/login")
                            .loginProcessingUrl("/perform_login")
-                              .defaultSuccessUrl("/dashboard", true)
+                              .successHandler(new CustomSuccessHandler())
                            .permitAll()
                    )
                   .logout(logout -> logout
@@ -111,6 +118,11 @@ public class SecurityConfig {
                           .clearAuthentication(true)
                           .permitAll()
                   )
+
+                  .exceptionHandling(e -> e
+                          .accessDeniedPage("/access-denied")
+                  )
+
                   .build() ;
     }
 

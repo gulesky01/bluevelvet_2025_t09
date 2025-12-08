@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Access Denied</title>
+
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background: #f2f2f2;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .card {
+            background: white;
+            padding: 40px;
+            width: 420px;
+            text-align: center;
+            border-radius: 12px;
+            box-shadow: 0 4px 18px rgba(0,0,0,0.15);
+        }
+
+        h1 {
+            color: #c0392b;
+            margin-bottom: 10px;
+        }
+
+        p {
+            color: #555;
+            font-size: 16px;
+        }
+
+        a {
+            display: inline-block;
+            margin-top: 25px;
+            padding: 12px 20px;
+            background: #2980b9;
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: bold;
+            transition: 0.2s ease;
+        }
+
+        a:hover {
+            background: #1c5f8a;
+        }
+    </style>
+</head>
+<body>
+
+<div class="card">
+    <h1>🚫 Access Denied</h1>
+    <p>You do not have permission to access this page.<br>
+        Only administrators are allowed to perform this action.</p>
+
+    <a th:href="@{/login}">⬅ Return to Login</a>
+</div>
+
+</body>
+</html>

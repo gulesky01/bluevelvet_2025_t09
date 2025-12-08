@@ -18,7 +18,7 @@
         (<span th:text="${role}"></span>)
     </h3>
     <!-- Apenas ADMIN pode ver -->
-    <div sec:authorize="hasRole('ADMIN')">
+    <div sec:authorize="hasRole('Administrator')">
         <a th:href="@{/register}" class="dashboard-card" style="background:#2980b9; color:white;">
             👤 Register New User
         </a>
@@ -44,8 +44,12 @@
 
     <br>
 
-    <!-- Botão para adicionar nova categoria -->
-    <a th:href="@{/categories/new}" class="dashboard-card">➕ Add Category</a>
+    <!-- Botão para adicionar nova categoria (apenas ADMIN) -->
+    <div sec:authorize="hasRole('Administrator')">
+        <a th:href="@{/categories/new}" class="dashboard-card">
+            ➕ Add Category
+        </a>
+    </div>
 
     <h2>Categories</h2>
 

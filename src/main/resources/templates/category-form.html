@@ -12,7 +12,7 @@
 <!-- ✅ CONTAINER + FORM CENTRALIZADO -->
 <div class="container category-form-container">
 
-    <h1>Cadastro de Categoria</h1>
+    <h1>Create new Category</h1>
 
     <!-- ✅ FORMULÁRIO -->
     <form th:action="@{/categories/save}" th:object="${category}" method="post">
@@ -24,19 +24,19 @@
         <!-- ID oculto (usado no editar) -->
         <input type="hidden" th:field="*{id}"/>
 
-        <label>Nome</label>
+        <label>Name</label>
         <input type="text" th:field="*{name}" required>
 
         <!-- ✅ CHECKBOX ESTILIZADO -->
         <div class="form-checkbox">
             <input type="checkbox" th:field="*{enabled}">
-            <label>Categoria ativa</label>
+            <label>Category enabled</label>
         </div>
 
         <!-- BOTÕES -->
         <div id="productControls">
-            <button type="submit">Salvar</button>
-            <a href="/categories" class="btn btn-secondary">Cancelar</a>
+            <button type="submit">Save</button>
+            <a href="/categories" class="btn btn-secondary">Cancel</a>
         </div>
 
     </form>
