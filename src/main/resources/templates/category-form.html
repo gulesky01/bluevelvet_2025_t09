@@ -9,31 +9,57 @@
 
 <body>
 
-<!-- ✅ CONTAINER + FORM CENTRALIZADO -->
 <div class="container category-form-container">
 
-    <h1>Create new Category</h1>
+    <h1 th:text="${category.id == null ? 'Create Category' : 'Edit Category'}"></h1>
 
-    <!-- ✅ FORMULÁRIO -->
-    <form th:action="@{/categories/save}" th:object="${category}" method="post">
+    <div th:if="${errorMessage}" class="error-box">
+        <p th:text="${errorMessage}"></p>
+    </div>
 
-        <div th:if="${errorMessage}" style="color: red; margin-bottom: 10px;">
-            <p th:text="${errorMessage}"></p>
-        </div>
 
-        <!-- ID oculto (usado no editar) -->
+    <!-- FORM -->
+    <form th:action="@{/categories/save}"
+          th:object="${category}"
+          method="post"
+          enctype="multipart/form-data">
+
+        <!-- ID oculto -->
         <input type="hidden" th:field="*{id}"/>
 
+        <!-- NAME -->
         <label>Name</label>
         <input type="text" th:field="*{name}" required>
 
-        <!-- ✅ CHECKBOX ESTILIZADO -->
+        <!-- PARENT CATEGORY -->
+        <label>Parent category</label>
+        <select th:field="*{parentId}">
+            <option value="">-- None (Top level) --</option>
+
+            <option th:each="cat : ${parents}"
+                    th:value="${cat.id}"
+                    th:text="${cat.name}"
+                    th:selected="${cat.id == category.parentId}">
+            </option>
+        </select>
+
+        <!-- CURRENT IMAGE (EDIT MODE) -->
+        <div th:if="${currentImage != null}">
+            <p>Current image:</p>
+            <img th:src="@{'/mass_storage/' + ${currentImage}}" width="150">
+        </div>
+
+        <!-- UPLOAD IMAGE -->
+        <label>Upload image</label>
+        <input type="file" name="imageFile" accept="image/*">
+
+        <!-- ENABLE / DISABLE -->
         <div class="form-checkbox">
             <input type="checkbox" th:field="*{enabled}">
             <label>Category enabled</label>
         </div>
 
-        <!-- BOTÕES -->
+        <!-- BUTTONS -->
         <div id="productControls">
             <button type="submit">Save</button>
             <a href="/categories" class="btn btn-secondary">Cancel</a>

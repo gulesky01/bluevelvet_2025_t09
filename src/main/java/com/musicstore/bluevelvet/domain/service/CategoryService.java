@@ -33,5 +33,8 @@ public interface CategoryService {
 
     void resetCategories();
 
+    CategoryResponse saveCategory(CategoryRequest request, MultipartFile file) throws Exception;
+
+    void deleteCategory(Long id);
 
 }

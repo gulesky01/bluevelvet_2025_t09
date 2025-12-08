@@ -255,3 +255,10 @@ td img {
     }
 }
 
+.error-box {
+    color: white;
+    background-color: #c0392b;
+    padding: 10px;
+    margin-bottom: 15px;
+    border-radius: 5px;
+}

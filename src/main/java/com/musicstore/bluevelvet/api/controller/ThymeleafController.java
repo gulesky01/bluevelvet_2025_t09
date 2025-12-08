@@ -17,7 +17,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
-import java.security.Principal;
+import org.springframework.web.multipart.MultipartFile;
+
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -179,43 +181,91 @@ public class ThymeleafController {
 
 
 
-    //FORMULÁRIO NOVA
+    // FORM NOVA CATEGORIA
+    @PreAuthorize("hasRole('Administrator')")
     @GetMapping("/categories/new")
     public String newCategory(Model model) {
-        model.addAttribute("category", new Category());
+
+        model.addAttribute("category", new CategoryRequest());
+        model.addAttribute("parents", categoryRepository.findAll());
+
         return "category-form";
     }
-
     //SALVAR (criar/editar)
+    @PreAuthorize("hasAnyRole('Administrator','Editor')")
     @PostMapping("/categories/save")
     public String saveCategory(
-            @ModelAttribute("category") CategoryRequest category,
+            @ModelAttribute("category") CategoryRequest request,
+            @RequestParam("imageFile") MultipartFile imageFile,
             Model model
     ) {
 
-        // Verifica duplicidade
-        if (categoryRepository.existsByNameIgnoreCase(category.getName())) {
-            model.addAttribute("errorMessage", "Categoria já existente.");
-            return "category-form";
+        boolean isEditing = request.getId() != null;
+
+        // -------------- Validar duplicidade (apenas CREATE)
+// -------------- Validar duplicidade (apenas CREATE)
+        if (!isEditing) {
+            boolean exists;
+
+            if (request.getParentId() == null) {
+                // Categoria raiz
+                exists = categoryRepository.existsByNameIgnoreCase(request.getName());
+            } else {
+                // Subcategoria
+                exists = categoryRepository.existsByNameIgnoreCaseAndParentId(
+                        request.getName(),
+                        request.getParentId()
+                );
+            }
+
+            if (exists) {
+                model.addAttribute("errorMessage", "Category name already exists.");
+                model.addAttribute("parents", categoryRepository.findAll());
+                return "category-form";
+            }
         }
 
-        // CHAMA O SERVICE CORRETO
-        categoryService.createCategory(category);
+
+        try {
+            categoryService.saveCategory(request, imageFile);
+        } catch (Exception e) {
+            model.addAttribute("errorMessage", e.getMessage());
+            model.addAttribute("parents", categoryRepository.findAll());
+            return "category-form";
+        }
 
         return "redirect:/categories";
     }
 
 
 
-    // Editar
+    // FORM EDITAR (APENAS ADMIN)
+    @PreAuthorize("hasAnyRole('Administrator','Editor')")
     @GetMapping("/categories/edit/{id}")
     public String editCategory(@PathVariable Long id, Model model) {
-        Category category = categoryRepository.findById(id).orElseThrow();
-        model.addAttribute("category", category);
+
+        Category category = categoryRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Category not found"));
+
+        CategoryRequest request = new CategoryRequest(
+                category.getId(),
+                category.getName(),
+                category.getParentId(),
+                category.getEnabled()
+        );
+
+        model.addAttribute("category", request);
+
+        // ✅ Ajustado para o nome real do campo
+        model.addAttribute("currentImage", category.getPicture_uuid());
+
+        model.addAttribute("parents", categoryRepository.findAll());
+
         return "category-form";
     }
 
     // Ativar / Desativar
+    @PreAuthorize("hasAnyRole('Administrator','Editor')")
     @GetMapping("/categories/toggle/{id}")
     public String toggleCategory(@PathVariable Long id) {
         Category category = categoryRepository.findById(id).orElseThrow();
@@ -225,6 +275,7 @@ public class ThymeleafController {
     }
 
     // Deletar
+    @PreAuthorize("hasAnyRole('Administrator','Editor')")
     @GetMapping("/categories/delete/{id}")
     public String deleteCategory(@PathVariable Long id) {
         categoryRepository.deleteById(id);

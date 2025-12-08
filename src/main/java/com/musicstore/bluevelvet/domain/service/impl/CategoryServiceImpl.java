@@ -205,6 +205,51 @@ public class CategoryServiceImpl implements CategoryService {
         return repository.findByParentId(parentId, pageable).map(this::responseFromEntity);
     }
 
+    @Override
+    public CategoryResponse saveCategory(CategoryRequest request, MultipartFile file) throws Exception {
+
+        Category category;
+
+        if (request.getId() == null) {
+            // CREATE
+            category = entityFromRequest(request);
+        } else {
+            // UPDATE
+            category = repository.findById(request.getId())
+                    .orElseThrow(() -> new CategoryNotFoundException("Categoria não existe."));
+            category.setName(request.getName());
+            category.setParentId(request.getParentId());
+            category.setEnabled(request.getEnabled());
+        }
+
+        // Salvar dados iniciais (sem imagem)
+        category = repository.save(category);
+
+        // Salvar imagem se enviada
+        if (file != null && !file.isEmpty()) {
+            String generatedUUID = UUID.randomUUID().toString();
+            massStorage.addPicture(file.getBytes(), generatedUUID);
+            category.setPicture_uuid(generatedUUID);
+            category = repository.save(category);
+        }
+
+        return responseFromEntity(category);
+    }
+
+
+    @Override
+    public void deleteCategory(Long id) {
+
+        Category category = repository.findById(id)
+                .orElseThrow(() -> new CategoryNotFoundException("Categoria não existe."));
+
+        if (category.getPicture_uuid() != null) {
+            massStorage.removePicture(category.getPicture_uuid());
+        }
+
+        repository.delete(category);
+    }
+
 
 
 
